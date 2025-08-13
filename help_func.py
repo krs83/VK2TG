@@ -1,0 +1,58 @@
+import textwrap
+
+from aiogram.types import InputMediaPhoto, URLInputFile
+
+from bot_handler import *
+from config import vk, DOMAIN, max_caption_length
+
+
+# adding a vk link to post
+def link_include(post, links, text, images):
+    post_url = vk + DOMAIN + '?w=wall' + \
+               str(post['owner_id']) + '_' + str(post['id'])
+    links.insert(0, post_url)
+    text = '\n'.join([text] + links)
+    datas_checker(images=images, text=text)
+
+
+# text processing with slicing up to value
+def shorten_text(text):
+    return textwrap.shorten(text=text, width=max_caption_length, placeholder='...') \
+        if len(text) >= max_caption_length else text
+
+
+# if one image to process
+def send_posts_img(text, img=None):
+    url = None
+    length = len(img)
+
+    if length != 0:
+        for photo in img[0]['sizes']:
+            # seeking for type Z image - good quality(proportional copy with max size  1280x1080)
+            if photo['type'] == 'z':
+                url = photo['url']
+        asyncio.run(send_image_to_bot(image=url, caption=text))
+
+
+# process common datas from api reply
+def datas_checker(images, text=None):
+    if (text is not None or text != '') and images is None:
+        send_text_to_bot(text)
+
+    image_urls = []
+    media = []
+
+    # if more then 1 image to process
+    if len(images) > 1:
+        for image in images:
+            for sizes in image['sizes']:
+                if sizes['type'] == 'z':
+                    image_urls.append(sizes['url'])
+
+        for i in image_urls:
+            media.append(InputMediaPhoto(media=URLInputFile(i)))
+        asyncio.run(send_text_to_bot(text=text))
+        asyncio.run(send_group_images_to_bot(group_images=media))
+    else:
+        # if one image to process
+        send_posts_img(text=text, img=images)
