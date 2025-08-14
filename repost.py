@@ -2,13 +2,13 @@
 from help_func import shorten_text, link_include
 
 
-def repost_processing(post):
+async def repost_processing(post):
     images = []
     links = []
 
     if 'copy_history' in post:
         copy_history = post['copy_history'][0]
-        text = shorten_text(copy_history['text'])
+        text = await shorten_text(copy_history['text'])
         # post text from repost
 
         # Check for reposts' attachment
@@ -35,4 +35,4 @@ def repost_processing(post):
                         img = img['photo']
                         images.append(img)
 
-        link_include(post, links, text, images)
+        await link_include(post, links, text, images)

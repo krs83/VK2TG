@@ -2,9 +2,9 @@ from help_func import shorten_text, link_include
 
 
 # function to check for datas from group's post
-def own_post_processing(post):
+async def own_post_processing(post):
     # Text
-    text = shorten_text(post['text'])
+    text = await shorten_text(post['text'])
 
     # Check for post attachments
     images = []
@@ -25,4 +25,4 @@ def own_post_processing(post):
                     if key != 'type' and 'url' in value:
                         attachments.append(value['url'])
 
-        link_include(post, links, text, images)
+        await link_include(post, links, text, images)

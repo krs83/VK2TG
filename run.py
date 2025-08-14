@@ -1,39 +1,51 @@
 import asyncio
 
-import requests
+import aiohttp
 
+from bot_handler import bot
 from config import *
 from own_post import own_post_processing
 from repost import repost_processing
 
-# get data from vk.com
-vk_answer = requests.get(url=url, params=params)
-
 
 # Check datas before posting to Bot
-def check_posts_vk():
-    response = reversed(vk_answer.json()['response']['items'])
+async def check_posts_vk():
+    # get data from vk.com
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get(url=url, params=params) as response:
+            data = await response.json()
 
-    for post in response:
-        # Read last post id from vk wall
-        id = config.get('Settings', 'LAST_ID')
+            posts = reversed(data['response']['items'])
 
-        # Compare published posts and continue
-        if int(post['id']) <= int(id):
-            print('Нет свежих новостей')
-            continue
+            for post in posts:
+                # Read last post id from vk wall
+                id = config.get('Settings', 'LAST_ID')
 
-        own_post_processing(post)
-        repost_processing(post)
+                # Compare published posts and continue
+                if int(post['id']) <= int(id):
+                    print('Нет свежих новостей')
+                    continue
 
-        # write id to settings.ini
-        config.set('Settings', 'LAST_ID', str(post['id']))
-        with open(config_path, "w") as config_file:
-            config.write(config_file)
+                await own_post_processing(post)
+                await repost_processing(post)
 
+                # write id to settings.ini
+                config.set('Settings', 'LAST_ID', str(post['id']))
+                with open(config_path, "w") as config_file:
+                    config.write(config_file)
+
+async def shutdown():
+    # Закрываем соединение с ботом
+    await bot.session.close()
+
+async def main():
+    """Основная асинхронная функция"""
+    try:
+        await check_posts_vk()  # Запускаем первоначальную проверку
+    finally:
+        await shutdown()
 
 if __name__ == '__main__':
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-    check_posts_vk()
+    asyncio.run(main())
 
 
