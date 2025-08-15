@@ -10,7 +10,7 @@ async def repost_processing(post):
 
     if 'copy_history' in post:
         copy_history = post['copy_history'][0]
-        # logger.info(copy_history)
+        logger.info(copy_history)
         text = await shorten_text(copy_history['text'])
         # post text from repost
 

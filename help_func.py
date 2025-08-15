@@ -31,14 +31,17 @@ async def send_posts_img(text, img=None):
             # seeking for type Z image - good quality(proportional copy with max size  1280x1080)
             if photo['type'] == 'z':
                 url = photo['url']
+                break
+            if photo['type'] == 'base':
+                url = photo['url']
         await asyncio.create_task(send_image_to_bot(image=url, caption=text))
 
 
 # process common datas from api reply
 async def datas_checker(images, text=None):
     if (text is not None or text != '') and images is None:
+        print(text)
         await send_text_to_bot(text)
-    print(f'images from datas_checker - {images}')
     image_urls = []
     media = []
 
