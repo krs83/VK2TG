@@ -38,7 +38,7 @@ async def send_posts_img(text, img=None):
 async def datas_checker(images, text=None):
     if (text is not None or text != '') and images is None:
         await send_text_to_bot(text)
-
+    print(f'images from datas_checker - {images}')
     image_urls = []
     media = []
 
@@ -48,11 +48,15 @@ async def datas_checker(images, text=None):
             for sizes in image['sizes']:
                 if sizes['type'] == 'z':
                     image_urls.append(sizes['url'])
+                    break
+                if sizes['type'] == 'base':
+                    image_urls.append(sizes['url'])
 
         for i in image_urls:
             media.append(InputMediaPhoto(media=URLInputFile(i)))
         await asyncio.create_task(send_text_to_bot(text=text))
-        await asyncio.create_task(send_group_images_to_bot(group_images=media))
+        if media:
+            await asyncio.create_task(send_group_images_to_bot(group_images=media))
     else:
         # if one image to process
         await send_posts_img(text=text, img=images)

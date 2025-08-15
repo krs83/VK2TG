@@ -1,6 +1,8 @@
 # Check for repost
 from help_func import shorten_text, link_include
+import logging
 
+logger = logging.getLogger(__name__)
 
 async def repost_processing(post):
     images = []
@@ -8,6 +10,7 @@ async def repost_processing(post):
 
     if 'copy_history' in post:
         copy_history = post['copy_history'][0]
+        # logger.info(copy_history)
         text = await shorten_text(copy_history['text'])
         # post text from repost
 

@@ -12,7 +12,7 @@ from aiogram.exceptions import TelegramForbiddenError
 
 # Настройка логирования
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s"
 )
 
@@ -40,9 +40,9 @@ async def check_posts_vk():
                 await repost_processing(post)
 
                 # write id to settings.ini
-                config.set('Settings', 'LAST_ID', str(post['id']))
-                with open(config_path, "w") as config_file:
-                    config.write(config_file)
+                # config.set('Settings', 'LAST_ID', str(post['id']))
+                # with open(config_path, "w") as config_file:
+                #     config.write(config_file)
 
 async def shutdown():
     # Закрываем соединение с ботом
