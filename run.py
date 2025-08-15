@@ -8,7 +8,7 @@ from config import *
 from own_post import own_post_processing
 from repost import repost_processing
 
-from aiogram.exceptions import TelegramForbiddenError
+from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
 
 # Настройка логирования
 logging.basicConfig(
@@ -54,6 +54,8 @@ async def main():
         await check_posts_vk()  # Запускаем первоначальную проверку
     except TelegramForbiddenError:
         logger.error('The bot is not administrator of this channel. Please add it as admin')
+    except TelegramRetryAfter:
+        logger.error('Too many requests. Please increase SLEEP variable')
     finally:
         await shutdown()
 
