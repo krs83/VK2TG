@@ -56,6 +56,8 @@ async def main():
         logger.error('The bot is not administrator of this channel. Please add it as admin')
     except TelegramRetryAfter:
         logger.error('Too many requests. Please increase SLEEP variable')
+    except KeyError:
+        logger.error('VK API error. An invalid token is possible')
     finally:
         await shutdown()
 

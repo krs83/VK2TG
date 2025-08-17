@@ -18,18 +18,6 @@ async def repost_processing(post):
         if 'attachments' in copy_history:
             copy_add = copy_history['attachments'][0]
 
-            # if there is a link
-            # if copy_add['type'] == 'link':
-            #     link = copy_add['link']
-            #     print(f'link is {link}')
-            #     text = link['title']
-            #     send_posts_text(text)
-            #     img = link['photo']
-            #     send_posts_img(img)
-            #     url = link['url']
-            #     send_posts_text(url)
-            #     print(url)
-
             # if there is an image
             if copy_add['type'] == 'photo':
                 attach = copy_history['attachments']
