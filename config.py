@@ -1,9 +1,8 @@
 import configparser
 import os
-import sys
 
 # settings variables
-config_path = os.path.join(sys.path[0], 'settings.ini')
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.ini')
 config = configparser.ConfigParser()
 config.read(config_path)
 
