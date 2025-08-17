@@ -40,7 +40,6 @@ async def send_posts_img(text, img=None):
 # process common datas from api reply
 async def datas_checker(images, text=None):
     if (text is not None or text != '') and images is None:
-        print(text)
         await send_text_to_bot(text)
     image_urls = []
     media = []

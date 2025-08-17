@@ -9,8 +9,8 @@ async def repost_processing(post):
     links = []
 
     if 'copy_history' in post:
+        logger.info('posting from another source')
         copy_history = post['copy_history'][0]
-        logger.info(copy_history)
         text = await shorten_text(copy_history['text'])
         # post text from repost
 
