@@ -1,9 +1,7 @@
-import textwrap
-
 from aiogram.types import InputMediaPhoto, URLInputFile
 
 from bot_handler import *
-from config import vk, DOMAIN, max_caption_length
+from config import vk, DOMAIN
 
 
 # adding a vk link to post
@@ -13,13 +11,6 @@ async def link_include(post, links, text, images):
     links.insert(0, post_url)
     text = '\n'.join([text] + links)
     await datas_checker(images=images, text=text)
-
-
-# text processing with slicing up to value
-async def  shorten_text(text):
-    return textwrap.shorten(text=text, width=max_caption_length, placeholder='...') \
-        if len(text) >= max_caption_length else text
-
 
 # if one image to process
 async def send_posts_img(text, img=None):

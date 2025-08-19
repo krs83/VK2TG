@@ -19,8 +19,7 @@ INCLUDE_LINK = config.getboolean('Settings', 'INCLUDE_LINK')
 # PREVIEW_LINK = config.getboolean('Settings', 'PREVIEW_LINK')
 LAST_ID = config.get('Settings', 'LAST_ID')
 
-# max_message_length = 4096
-max_caption_length = 900
+MAX_MESSAGE_LENGTH = 4096
 
 vk = 'https://vk.com/'
 url = 'https://api.vk.com/method/wall.get'

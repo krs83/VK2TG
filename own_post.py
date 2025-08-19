@@ -1,4 +1,4 @@
-from help_func import shorten_text, link_include
+from help_func import link_include
 import logging
 
 logger = logging.getLogger(__name__)
@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 # function to check for datas from group's post
 async def own_post_processing(post):
     # Text
-    text = await shorten_text(post['text'])
+    text = post['text']
 
     # Check for post attachments
     images = []
