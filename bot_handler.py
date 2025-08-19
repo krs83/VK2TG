@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot
 from aiogram.exceptions import TelegramBadRequest
 
-from config import SLEEP, CHANNEL, BOT_TOKEN, MAX_MESSAGE_LENGTH
+from config import SLEEP, CHANNEL, BOT_TOKEN, MAX_MESSAGE_LENGTH, MAX_CAPTION_LENGTH
 
 # bot initialization
 bot = Bot(token=BOT_TOKEN)
@@ -19,7 +19,6 @@ def if_long_text(text: str, max_length: int=MAX_MESSAGE_LENGTH) -> str:
         for i in range(0, len(text), max_length):
             yield text[i:i + max_length]
 
-
 async def send_text_to_bot(text=None):
     await asyncio.sleep(int(SLEEP))
 
@@ -28,13 +27,16 @@ async def send_text_to_bot(text=None):
         for part in if_long_text(text):
             await bot.send_message(CHANNEL, part)
 
-async def send_image_to_bot(caption, image=None):
+async def send_image_to_bot(text: str, image=None):
     await asyncio.sleep(int(SLEEP))
 
     if image is not None:
         logger.info('sending image')
-        await bot.send_photo(CHANNEL, photo=image, caption=caption)
 
+        await bot.send_photo(CHANNEL, photo=image)
+
+        for part in if_long_text(text):
+            await bot.send_message(CHANNEL, part)
 
 async def send_group_images_to_bot(group_images=None):
     await asyncio.sleep(int(SLEEP))

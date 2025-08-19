@@ -25,7 +25,7 @@ async def send_posts_img(text, img=None):
                 break
             if photo['type'] == 'base':
                 url = photo['url']
-        await asyncio.create_task(send_image_to_bot(image=url, caption=text))
+        await asyncio.create_task(send_image_to_bot(image=url, text=text))
 
 
 # process common datas from api reply
