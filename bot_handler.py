@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot
 from aiogram.exceptions import TelegramBadRequest
 
-from config import SLEEP, CHANNEL, BOT_TOKEN, MAX_MESSAGE_LENGTH, MAX_CAPTION_LENGTH
+from config import SLEEP, CHANNEL, BOT_TOKEN, MAX_MESSAGE_LENGTH
 
 # bot initialization
 bot = Bot(token=BOT_TOKEN)

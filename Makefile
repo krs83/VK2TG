@@ -1,5 +1,5 @@
 build:
-	pyinstaller --onefile --add-data "settings.ini:." run.py
+	pyinstaller run.py
 	cp settings.ini dist/
 
 clean:
