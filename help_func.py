@@ -1,7 +1,7 @@
 from aiogram.types import InputMediaPhoto, URLInputFile
 
 from bot_handler import *
-from config import vk, DOMAIN
+from config import vk, DOMAIN, PRIORITY
 
 
 # adding a vk link to post
@@ -12,19 +12,27 @@ async def link_include(post, links, text, images):
     text = '\n'.join([text] + links)
     await datas_checker(images=images, text=text)
 
+def seeking_img_sizes(image):
+    # Создаем словарь для быстрого поиска
+    if len(image) > 1:
+        size_map = {img['type']: img['url'] for img in image['sizes'] if 'type' in img and 'url' in img}
+    else:
+        size_map = {img['type']: img['url'] for img in image[0]['sizes'] if 'type' in img and 'url' in img}
+
+    # Ищем по приоритету
+    for size_type in PRIORITY:
+        if url := size_map.get(size_type):
+            return url
+
+    return None
+
+
 # if one image to process
-async def send_posts_img(text, img=None):
-    url = None
-    length = len(img)
+async def send_posts_img(text, image=None):
+    length = len(image)
 
     if length != 0:
-        for photo in img[0]['sizes']:
-            # seeking for type Z image - good quality(proportional copy with max size  1280x1080)
-            if photo['type'] == 'z':
-                url = photo['url']
-                break
-            if photo['type'] == 'base':
-                url = photo['url']
+        url = seeking_img_sizes(image)
         await asyncio.create_task(send_image_to_bot(image=url, text=text))
 
 
@@ -37,13 +45,9 @@ async def datas_checker(images, text=None):
 
     # if more then 1 image to process
     if len(images) > 1:
-        for image in images:
-            for sizes in image['sizes']:
-                if sizes['type'] == 'z':
-                    image_urls.append(sizes['url'])
-                    break
-                if sizes['type'] == 'base':
-                    image_urls.append(sizes['url'])
+        for img in images:
+            url = seeking_img_sizes(img)
+            image_urls.append(url)
 
         for i in image_urls:
             media.append(InputMediaPhoto(media=URLInputFile(i)))
@@ -52,4 +56,4 @@ async def datas_checker(images, text=None):
             await asyncio.create_task(send_group_images_to_bot(group_images=media))
     else:
         # if one image to process
-        await send_posts_img(text=text, img=images)
+        await send_posts_img(text=text, image=images)

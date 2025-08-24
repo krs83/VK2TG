@@ -20,6 +20,7 @@ INCLUDE_LINK = config.getboolean('Settings', 'INCLUDE_LINK')
 LAST_ID = config.get('Settings', 'LAST_ID')
 
 MAX_MESSAGE_LENGTH = 4096
+PRIORITY = ['z', 'base', 'x', 'm', 's']
 
 vk = 'https://vk.com/'
 url = 'https://api.vk.com/method/wall.get'
@@ -31,5 +32,7 @@ params = {
     'offset': OFFSET,
     'access_token': VK_TOKEN
 }
+
+
 
 

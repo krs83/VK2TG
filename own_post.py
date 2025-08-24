@@ -8,7 +8,7 @@ async def own_post_processing(post):
     # Text
     text = post['text']
 
-    # Check for post attachments
+# Check for post attachments
     images = []
     links = []
     attachments = []
