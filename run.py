@@ -41,11 +41,11 @@ async def check_posts_vk():
                 await repost_processing(post)
 
                 # write id to settings.ini
-                # config.set('Settings', 'LAST_ID', str(post['id']))
-                # with open(config_path, "w") as config_file:
-                #     logger.info(f'Last posted news is {post_id}')
-                #     logger.info('_'*25)
-                #     config.write(config_file)
+                config.set('Settings', 'LAST_ID', str(post['id']))
+                with open(config_path, "w") as config_file:
+                    logger.info(f'Last posted news is {post_id}')
+                    logger.info('_'*25)
+                    config.write(config_file)
 
 async def shutdown():
     # Закрываем соединение с ботом
