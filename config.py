@@ -22,8 +22,8 @@ LAST_ID = config.get('Settings', 'LAST_ID')
 MAX_MESSAGE_LENGTH = 4096
 PRIORITY = ['z', 'base', 'x', 'm', 's']
 
-vk = 'https://vk.com/'
-url = 'https://api.vk.com/method/wall.get'
+vk = 'https://vk.ru/'
+url = 'https://api.vk.ru/method/wall.get'
 
 params = {
     'owner_id': OWNER_ID,
