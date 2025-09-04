@@ -62,7 +62,7 @@ async def main():
     except TelegramRetryAfter:
         logger.error('Too many requests. Please increase SLEEP variable')
     except KeyError:
-        logger.error('VK API error. An invalid token is possible')
+        logger.error('Key error. This key is not found')
     except NoSectionError:
         logger.error('Configure file is absent. Please add it to root folder')
     finally:
