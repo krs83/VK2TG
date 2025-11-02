@@ -61,8 +61,8 @@ async def main():
         logger.error('The bot is not administrator of this channel. Please add it as admin')
     except TelegramRetryAfter:
         logger.error('Too many requests. Please increase SLEEP variable')
-    except KeyError:
-        logger.error('Key error. This key is not found')
+    except KeyError as msg:
+        logger.error(f'Key error. This key is not found: {msg}')
     except NoSectionError:
         logger.error('Configure file is absent. Please add it to root folder')
     finally:

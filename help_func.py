@@ -14,15 +14,20 @@ async def link_include(post, links, text, images):
 
 def seeking_img_sizes(image):
     # Создаем словарь для быстрого поиска
-    if len(image) > 1:
-        size_map = {img['type']: img['url'] for img in image['sizes'] if 'type' in img and 'url' in img}
-    else:
-        size_map = {img['type']: img['url'] for img in image[0]['sizes'] if 'type' in img and 'url' in img}
+    if 'sizes' in image:
+        if len(image) > 1:
+            size_map = {img['type']: img['url'] for img in image['sizes'] if 'type' in img and 'url' in img}
+        else:
+            size_map = {img['type']: img['url'] for img in image[0]['sizes'] if 'type' in img and 'url' in img}
 
-    # Ищем по приоритету
-    for size_type in PRIORITY:
-        if url := size_map.get(size_type):
-            return url
+        # Ищем по приоритету
+        for size_type in PRIORITY:
+            if url := size_map.get(size_type):
+                return url
+    # проработать еще так как при наличии видео и фото, будет парситься только фото первый кадр
+    else:
+        url = image[0]['url']
+        return url
 
     return None
 
