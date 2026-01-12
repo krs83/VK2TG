@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot
-from aiogram.exceptions import TelegramBadRequest
+from aiogram.exceptions import TelegramBadRequest, TelegramNetworkError
 
 from config import SLEEP, CHANNEL, BOT_TOKEN, MAX_MESSAGE_LENGTH
 
@@ -45,5 +45,9 @@ async def send_group_images_to_bot(group_images=None):
         if group_images is not None:
             logger.info('sending group images')
             await bot.send_media_group(CHANNEL, media=group_images)
-    except TelegramBadRequest as msg:
-        logger.error(msg)
+    except TelegramBadRequest as e:
+        # Ошибки API Telegram (неправильные данные, лимиты и т.д.)
+        logger.error(f"Ошибка запроса Telegram: {e}")
+    except TelegramNetworkError as e:
+        # Сетевые ошибки (таймауты, 404 на изображениях и т.д.)
+        logger.error(f"Сетевая ошибка: {e}")
