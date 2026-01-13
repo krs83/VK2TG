@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 async def repost_processing(post):
     images = []
     links = []
-    print(f'{post=}')
 
     if 'copy_history' in post:
         owner_id = post['copy_history'][0]['owner_id']
@@ -35,7 +34,6 @@ async def repost_processing(post):
                 if copy_add['type'] == 'video':
                     attach = copy_history['attachments'][0]['video']
                     frame1 = attach['first_frame'][0]
-                    print(f'{frame1=}')
                     images.append(frame1)
 
             await link_include(post, links, text, images)

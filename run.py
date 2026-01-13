@@ -8,7 +8,7 @@ from config import *
 from own_post import own_post_processing
 from repost import repost_processing
 
-from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
+from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter, TelegramBadRequest
 from configparser import NoSectionError
 
 # Настройка логирования
@@ -63,6 +63,8 @@ async def main():
         logger.error('Too many requests. Please increase SLEEP variable')
     except KeyError as msg:
         logger.error(f'Key error. This key is not found: {msg}')
+    except TelegramBadRequest as msg:
+        logger.error(f'The error from Telegram: {msg}')
     except NoSectionError:
         logger.error('Configure file is absent. Please add it to root folder')
     finally:

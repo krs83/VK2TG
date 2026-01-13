@@ -12,9 +12,10 @@ async def link_include(post, links, text, images):
     text = '\n'.join([text] + links)
     await datas_checker(images=images, text=text)
 
+
 def seeking_img_sizes(image):
     # Создаем словарь для быстрого поиска
-    if 'sizes' in image:
+    if 'sizes' in image or 'sizes' in image[0]:
         if len(image) > 1:
             size_map = {img['type']: img['url'] for img in image['sizes'] if 'type' in img and 'url' in img}
         else:
