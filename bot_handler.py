@@ -2,12 +2,18 @@ import asyncio
 import logging
 
 from aiogram import Bot
+from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.exceptions import TelegramBadRequest, TelegramNetworkError
+from aiohttp import ClientTimeout
 
 from config import SLEEP, CHANNEL, BOT_TOKEN, MAX_MESSAGE_LENGTH
 
 # bot initialization
-bot = Bot(token=BOT_TOKEN)
+timeout = ClientTimeout(total=60,
+                        connect=30,
+                        sock_read=30)
+session = AiohttpSession(timeout=timeout)
+bot = Bot(token=BOT_TOKEN, session=session)
 
 logger = logging.getLogger(__name__)
 
